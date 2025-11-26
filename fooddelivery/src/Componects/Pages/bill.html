@@ -28,6 +28,11 @@ body{
   border-radius:15px;
   box-shadow:0 8px 30px rgba(0,0,0,0.1);
 }
+.logo{
+  width:100px;
+  display:block;
+  margin:0 auto 20px;
+}
 .row{
   font-size:17px;
   padding:10px 0;
@@ -42,16 +47,34 @@ body{
   color:#ff6a00;
   font-weight:600;
 }
-.pay{
+.payments{
+  margin-top:25px;
+}
+.payments button{
   width:100%;
   padding:14px;
   background:#ff6a00;
   color:#fff;
   border:none;
-  margin-top:20px;
+  margin-top:12px;
   border-radius:10px;
   font-size:16px;
   cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.cod{
+  background:#2e7d32;
+}
+.upi{
+  background:#1976d2;
+}
+.pay-icon{
+  width:22px;
+  height:22px;
+  object-fit:contain;
 }
 </style>
 
@@ -67,7 +90,7 @@ function loadBill(){
   document.getElementById("amt").innerHTML = total
 }
 
-function pay(){
+function razorpayPay(){
   let amt = document.getElementById("amt").innerText * 100
   var options = {
     key: "rzp_test_1234567890",
@@ -80,6 +103,14 @@ function pay(){
   var rzp = new Razorpay(options)
   rzp.open()
 }
+
+function codPay(){
+  alert("Cash on Delivery selected")
+}
+
+function upiPay(method){
+  alert(method + " selected")
+}
 </script>
 </head>
 
@@ -88,11 +119,35 @@ function pay(){
 <div class="title">Final Bill</div>
 
 <div class="box">
+<img src="https://i.imgur.com/0Z8FQYx.png" class="logo">
+
 <div id="bill"></div>
 
 <div class="total">Total: ₹<span id="amt"></span></div>
 
-<button class="pay" onclick="pay()">Pay Now</button>
+<div class="payments">
+
+<button onclick="razorpayPay()">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" class="pay-icon">Pay with Razorpay
+</button>
+
+<button class="upi" onclick="upiPay('Paytm')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Paytm_Logo.jpg" class="pay-icon">Pay with Paytm
+</button>
+
+<button class="upi" onclick="upiPay('Google Pay')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Google_Pay_Logo.svg" class="pay-icon">Pay with Google Pay
+</button>
+
+<button class="upi" onclick="upiPay('PhonePe')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/PhonePe_Logo.svg" class="pay-icon">Pay with PhonePe
+</button>
+
+<button class="cod" onclick="codPay()">
+<img src="https://cdn-icons-png.flaticon.com/512/2331/2331970.png" class="pay-icon">Cash on Delivery
+</button>
+
+</div>
 </div>
 
 </body>
