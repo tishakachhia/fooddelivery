@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bill</title>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<title>Final Bill</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -28,6 +27,11 @@ body{
   border-radius:15px;
   box-shadow:0 8px 30px rgba(0,0,0,0.1);
 }
+.logo{
+  width:100px;
+  display:block;
+  margin:0 auto 20px;
+}
 .row{
   font-size:17px;
   padding:10px 0;
@@ -42,16 +46,58 @@ body{
   color:#ff6a00;
   font-weight:600;
 }
-.pay{
+.payments button{
   width:100%;
   padding:14px;
-  background:#ff6a00;
+  background:#1976d2;
   color:#fff;
   border:none;
-  margin-top:20px;
+  margin-top:12px;
   border-radius:10px;
   font-size:16px;
   cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.pay-icon{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+}
+#qr-screen, #success-screen{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#fff;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:20px;
+}
+#qr-img{
+  width:300px;
+  border-radius:15px;
+}
+.done-btn{
+  margin-top:25px;
+  padding:14px 30px;
+  background:#2e7d32;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+  cursor:pointer;
+}
+.success-text{
+  font-size:28px;
+  color:#2e7d32;
+  font-weight:600;
+  text-align:center;
 }
 </style>
 
@@ -66,19 +112,13 @@ function loadBill(){
   document.getElementById("bill").innerHTML = out
   document.getElementById("amt").innerHTML = total
 }
-
-function pay(){
-  let amt = document.getElementById("amt").innerText * 100
-  var options = {
-    key: "rzp_test_1234567890",
-    amount: amt,
-    currency: "INR",
-    name: "Food App",
-    description: "Order Payment",
-    theme: { color: "#ff6a00" }
-  }
-  var rzp = new Razorpay(options)
-  rzp.open()
+function showQR(){
+  document.getElementById("qr-screen").style.display = "flex"
+}
+function paymentDone(){
+  document.getElementById("qr-screen").style.display = "none"
+  document.getElementById("success-screen").style.display = "flex"
+  localStorage.removeItem("cart")
 }
 </script>
 </head>
@@ -88,11 +128,24 @@ function pay(){
 <div class="title">Final Bill</div>
 
 <div class="box">
-<div id="bill"></div>
 
+<div id="bill"></div>
 <div class="total">Total: ₹<span id="amt"></span></div>
 
-<button class="pay" onclick="pay()">Pay Now</button>
+<div class="payments">
+<button onclick="showQR()">
+pay with UPI
+</button>
+</div>
+</div>
+
+<div id="qr-screen">
+<img src="./src/assets/image.png" id="qr-img" alt="QR Code">
+<button class="done-btn" onclick="paymentDone()">Payment Done</button>
+</div>
+
+<div id="success-screen">
+<div class="success-text">✅ Order Successful</div>
 </div>
 
 </body>
